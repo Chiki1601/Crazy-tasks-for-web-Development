@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruits and Vegetables</title>
+</head>
+<body>
+
+    <h2>Select a category:</h2>
+
+    <form id="foodForm">
+        <label>
+            <input type="radio" name="foodCategory" value="fruits" checked /> Fruits
+        </label>
+        <label>
+            <input type="radio" name="foodCategory" value="vegetables" /> Vegetables
+        </label>
+        <button type="button" onclick="showList()">Show List</button>
+    </form>
+
+    <h3>Selected List:</h3>
+    <div id="foodList"></div>
+
+    <script>
+        function showList() {
+            var selectedCategory = document.querySelector('input[name="foodCategory"]:checked').value;
+            var foodListContainer = document.getElementById('foodList');
+            var foodList;
+
+            if (selectedCategory === 'fruits') {
+                foodList = ['Apple', 'Banana', 'Orange', 'Grapes', 'Strawberry'];
+            } else if (selectedCategory === 'vegetables') {
+                foodList = ['Carrot', 'Broccoli', 'Spinach', 'Tomato', 'Cucumber'];
+            }
+
+            // Display the selected list
+            foodListContainer.innerHTML = '<p>Category: ' + selectedCategory + '</p><ul>';
+
+            for (var i = 0; i < foodList.length; i++) {
+                foodListContainer.innerHTML += '<li>' + foodList[i] + '</li>';
+            }
+
+            foodListContainer.innerHTML += '</ul>';
+        }
+    </script>
+
+</body>
+</html>
