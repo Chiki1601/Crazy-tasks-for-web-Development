@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Counter</title>
+</head>
+<body>
+
+    <h2>Text Counter</h2>
+
+    <form>
+        <label for="textInput">Enter text:</label>
+        <textarea id="textInput" rows="4" cols="50" oninput="updateTextCount()"></textarea>
+        <p>Character count: <span id="charCount">0</span></p>
+    </form>
+
+    <script>
+        function updateTextCount() {
+            const textInput = document.getElementById('textInput');
+            const charCountSpan = document.getElementById('charCount');
+
+            const charCount = textInput.value.length;
+            charCountSpan.textContent = charCount;
+        }
+    </script>
+
+</body>
+</html>
