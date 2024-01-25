@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Counter (jQuery)</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+    <h2>Text Counter (jQuery)</h2>
+
+    <form>
+        <label for="textInput">Enter text:</label>
+        <textarea id="textInput" rows="4" cols="50"></textarea>
+        <p>Character count: <span id="charCount">0</span></p>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            $('#textInput').on('input', function () {
+                updateTextCount();
+            });
+
+            function updateTextCount() {
+                const textInput = $('#textInput');
+                const charCountSpan = $('#charCount');
+
+                const charCount = textInput.val().length;
+                charCountSpan.text(charCount);
+            }
+        });
+    </script>
+
+</body>
+</html>
