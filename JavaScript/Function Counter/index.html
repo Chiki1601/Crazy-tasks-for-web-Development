@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function Call Checker</title>
+</head>
+<body>
+    <button onclick="callFunction()">Call Function</button>
+    <div id="output"></div>
+
+    <script>
+        var callCount = 0;
+
+        function callFunction() {
+            callCount++;
+
+            if (callCount % 2 === 0) {
+                document.getElementById('output').innerText = "Hi Pooja (ODD)";
+            } else {
+                document.getElementById('output').innerText = "Hello Pooja Even";
+            }
+        }
+    </script>
+</body>
+</html>
+
