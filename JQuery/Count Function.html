@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function Call Checker</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <button id="callButton">Call Function</button>
+    <div id="output"></div>
+
+    <script>
+        $(document).ready(function() {
+            var callCount = 0;
+
+            $('#callButton').click(function() {
+                callCount++;
+
+                if (callCount % 2 === 0) {
+                    $('#output').text("Hi Pooja (ODD)");
+                } else {
+                    $('#output').text("Hello Pooja Even");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
