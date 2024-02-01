@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Dropdown</title>
+</head>
+<body>
+    <label for="dynamicDropdown">Select an option:</label>
+    <select id="dynamicDropdown">
+        <option value="">Loading options...</option>
+    </select>
+
+    <script>
+        // Simulated asynchronous data loading (e.g., from an API)
+        setTimeout(function() {
+            // Sample data (replace with your data source or API call)
+            var optionsData = [
+                { value: 'option1', text: 'Option 1' },
+                { value: 'option2', text: 'Option 2' },
+                { value: 'option3', text: 'Option 3' },
+                { value: 'option4', text: 'Option 4' }
+            ];
+
+            var dropdown = document.getElementById('dynamicDropdown');
+
+            // Clear existing options
+            dropdown.innerHTML = '';
+
+            // Add the new options
+            optionsData.forEach(function(option) {
+                var optionElement = document.createElement('option');
+                optionElement.value = option.value;
+                optionElement.textContent = option.text;
+                dropdown.appendChild(optionElement);
+            });
+
+            // Set the default option
+            dropdown.value = '';
+
+        }, 1000); // Simulating a delay of 1 second (1000 milliseconds)
+    </script>
+</body>
+</html>
