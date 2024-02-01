@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Management System</title>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        select, input[type="text"] {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <label for="clientSelect">Client:</label>
+        <select id="clientSelect">
+            <option value="">Select Client</option>
+            <option value="client1">Client 1</option>
+            <option value="client2">Client 2</option>
+            <option value="client3">Client 3</option>
+            <option value="client4">Client 4</option>
+            <option value="client5">Client 5</option>
+        </select>
+        <br>
+        <label for="projectSelect">Project:</label>
+        <select id="projectSelect">
+            <option value="">Select Project</option>
+            <option value="project1">Project 1</option>
+            <option value="project2">Project 2</option>
+            <option value="project3">Project 3</option>
+            <option value="project4">Project 4</option>
+            <option value="project5">Project 5</option>
+            <option value="project6">Project 6</option>
+            <option value="project7">Project 7</option>
+            <option value="project8">Project 8</option>
+            <option value="project9">Project 9</option>
+            <option value="project10">Project 10</option>
+            <option value="project11">Project 11</option>
+            <option value="project12">Project 12</option>
+        </select>
+        <br>
+        <label for="resourceSelect">Resource:</label>
+        <select id="resourceSelect">
+            <option value="">Select Resource</option>
+            <option value="resource1">Resource 1</option>
+            <option value="resource2">Resource 2</option>
+            <option value="resource3">Resource 3</option>
+            <option value="resource4">Resource 4</option>
+            <option value="resource5">Resource 5</option>
+            <option value="resource6">Resource 6</option>
+            <option value="resource7">Resource 7</option>
+            <option value="resource8">Resource 8</option>
+            <option value="resource9">Resource 9</option>
+            <option value="resource10">Resource 10</option>
+            <option value="resource11">Resource 11</option>
+            <option value="resource12">Resource 12</option>
+        </select>
+        <br>
+        <button id="addToGridBtn">Add to Grid</button>
+        <br><br>
+        <table id="grid">
+            <thead>
+                <tr>
+                    <th>Client</th>
+                    <th>Project</th>
+                    <th>Resource</th>
+                    <th>Tasks</th>
+                    <th>Hours</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Grid data will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Function to add selected data to the grid
+            $('#addToGridBtn').click(function() {
+                var client = $('#clientSelect').val();
+                var project = $('#projectSelect').val();
+                var resource = $('#resourceSelect').val();
+
+                if (client && project && resource) {
+                    var newRow = '<tr>' +
+                                    '<td class="editable client">' + client + '</td>' +
+                                    '<td class="editable project">' + project + '</td>' +
+                                    '<td class="editable resource">' + resource + '</td>' +
+                                    '<td class="editable" data-type="tasks"></td>' +
+                                    '<td class="editable" data-type="hours"></td>' +
+                                    '<td class="editable" data-type="comments"></td>' +
+                                 '</tr>';
+                    $('#grid tbody').append(newRow);
+                } else {
+                    alert('Please select Client, Project, and Resource.');
+                }
+            });
+
+            // Event listener for cell click and editing
+            $('#grid').on('click', 'td.editable', function() {
+                if (!$(this).hasClass('client') && !$(this).hasClass('project') && !$(this).hasClass('resource')) {
+                    var originalContent = $(this).text().trim();
+                    var dataType = $(this).data('type');
+                    $(this).html('<input type="text" class="editField" value="' + originalContent + '">');
+                    var editField = $(this).find('.editField');
+                    editField.focus().data('originalContent', originalContent).data('dataType', dataType);
+                } else {
+                    var originalContent = $(this).text().trim();
+                    var $dataType = $(this).attr('class').split(' ')[1];
+                    var $sourceDropdown;
+
+                    if ($dataType === 'client') {
+                        $sourceDropdown = $('#clientSelect').clone();
+                    } else if ($dataType === 'project') {
+                        $sourceDropdown = $('#projectSelect').clone();
+                    } else if ($dataType === 'resource') {
+                        $sourceDropdown = $('#resourceSelect').clone();
+                    }
+
+                    var select = $sourceDropdown.val(originalContent).prop('outerHTML');
+                    $(this).html(select);
+                }
+            });
+
+            // Event listener for select change
+            $('#grid').on('change', 'select', function() {
+                var newContent = $(this).val();
+                $(this).parent().text(newContent);
+            });
+
+            // Event listener for textbox blur
+            $('#grid').on('blur', '.editField', function() {
+                var newContent = $(this).val().trim();
+                var originalContent = $(this).data('originalContent');
+                var dataType = $(this).data('dataType');
+
+                if (dataType === 'hours') {
+                    if (/^\d*\.?\d*$/.test(newContent) && newContent !== '') {
+                        $(this).parent().text(newContent);
+                    } else {
+                        $(this).parent().text(originalContent);
+                        alert('Please enter a valid decimal number for hours.');
+                    }
+                } else if (dataType === 'tasks' || dataType === 'comments') {
+                    if (newContent !== '') {
+                        if (/^[a-zA-Z\s]*$/.test(newContent)) {
+                            $(this).parent().text(newContent);
+                        } else {
+                            $(this).parent().text(originalContent);
+                            alert('Please enter a valid string value for tasks and comments.');
+                        }
+                    } else {
+                        $(this).parent().text(originalContent);
+                        alert('Please enter a non-empty string for tasks and comments.');
+                    }
+                } else if (!$(this).parent().hasClass('client') && !$(this).parent().hasClass('project') && !$(this).parent().hasClass('resource')) {
+                    $(this).parent().text(newContent);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
