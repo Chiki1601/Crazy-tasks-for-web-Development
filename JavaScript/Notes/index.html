@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sticky Note To-Do List</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    #toDoContainer {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    #inputField {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 5px 0 0 5px;
+    }
+
+    #addButton {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 0 5px 5px 0;
+      background-color: #4caf50;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    #addButton:hover {
+      background-color: #45a049;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      position: relative; /* Needed for positioning the delete icon */
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .delete-icon {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      color: #888;
+      cursor: pointer;
+    }
+
+    .note-1 { background-color: violet; }
+    .note-2 { background-color: purple; }
+    .note-3 { background-color: pink; }
+    .note-4 { background-color: green; }
+    .note-5 { background-color: orange; }
+    .note-6 { background-color: red; }
+    .note-7 { background-color: yellow; }
+    .note-8 { background-color: maroon; }
+    .note-9 { background-color: lightpink; }
+    .note-10 { background-color: skyblue; }
+    .note-11 { background-color: blue; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sticky Note To-Do List</h1>
+    <div id="toDoContainer">
+      <input type="text" id="inputField" placeholder="Add a new task...">
+      <button id="addButton">Add</button>
+    </div>
+    <ul id="toDoList"></ul>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const addButton = document.getElementById('addButton');
+      const inputField = document.getElementById('inputField');
+      const toDoList = document.getElementById('toDoList');
+
+      addButton.addEventListener('click', function() {
+        const taskText = inputField.value;
+        if (taskText.trim() !== '') {
+          addTask(taskText);
+          inputField.value = '';
+        } else {
+          alert('Please enter a task!');
+        }
+      });
+
+      function addTask(taskText) {
+        const listItem = document.createElement('li');
+        const randomClass = Math.floor(Math.random() * 11) + 1;
+        listItem.classList.add(`note-${randomClass}`);
+        listItem.textContent = taskText;
+        toDoList.appendChild(listItem);
+
+        // Add delete icon
+        const deleteIcon = document.createElement('i');
+        deleteIcon.classList.add('fas', 'fa-trash-alt', 'delete-icon');
+        listItem.appendChild(deleteIcon);
+
+        // Remove task on click and show toastr notification
+        deleteIcon.addEventListener('click', function(event) {
+          event.stopPropagation(); // Prevent li click event from firing
+          if (confirm('Do you want to remove this task?')) {
+            listItem.remove();
+            toastr.success('Task removed successfully');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
